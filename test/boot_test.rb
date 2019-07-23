@@ -1,11 +1,13 @@
-require File.expand_path '../test_helper', __FILE__
+# frozen_string_literal: true
+
+require File.expand_path 'test_helper', __dir__
 
 class RootRackAppTest < MiniTest::Test
   include Rack::Test
   include Rack::Test::Methods
 
   def app
-    Rack::Builder.parse_file("config.ru").first
+    Rack::Builder.parse_file('config.ru').first
   end
 
   def test_index

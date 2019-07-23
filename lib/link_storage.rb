@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'pstore'
 
+# Stores and reads url-short url pairs
 class LinkStorage
   def initialize(store_name = 'url_store.pstore')
     @store = client(store_name)
@@ -14,10 +17,9 @@ class LinkStorage
   end
 
   def read_value(shortened_url)
-    begin @store.transaction { @store.fetch(shortened_url) }
-    rescue PStore::Error
-      ''
-    end
+    @store.transaction { @store.fetch(shortened_url) }
+  rescue PStore::Error
+    ''
   end
 
   def save_value(url)

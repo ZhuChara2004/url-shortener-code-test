@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 Bundler.require :default
 
 require_relative 'lib/link_storage'
 
+# Main Rack application
 class RootRackApp
   STATUS_OK = 200
   STATUS_CREATED = 201
@@ -19,21 +22,10 @@ class RootRackApp
     request = Rack::Request.new(env)
 
     return unprocessable_entity_response unless request.post? || request.get?
+    return post_request_response(request) if request.post?
+    return index_request_response if request.path == ROOT_PATH
 
-    if request.post?
-      url = JSON.parse(request.body.read)['url']
-      return [STATUS_CREATED, response_headers, shorten_url(url, request)]
-    end
-
-    return [STATUS_OK, response_headers, index_data_body] if request.path == ROOT_PATH
-
-    expanded_url = expand_url(request.path[1..-1])
-    case expanded_url
-    when ''
-      [STATUS_NOT_FOUND, response_headers, not_found_body]
-    else
-      [STATUS_REDIRECT, redirect_headers(expanded_url), []]
-    end
+    find_request_response(request)
   end
 
   private
@@ -43,11 +35,11 @@ class RootRackApp
   end
 
   def response_headers
-    { "Content-Type" => "application/json" }
+    { 'Content-Type' => 'application/json' }
   end
 
   def redirect_headers(url)
-    { "Location" => url }
+    { 'Location' => url }
   end
 
   def index_data_body
@@ -68,6 +60,25 @@ class RootRackApp
 
   def expand_url(shortened_url)
     @storage.read_value(shortened_url)
+  end
+
+  def index_request_response
+    [STATUS_OK, response_headers, index_data_body]
+  end
+
+  def find_request_response(request)
+    expanded_url = expand_url(request.path[1..-1])
+    case expanded_url
+    when ''
+      [STATUS_NOT_FOUND, response_headers, not_found_body]
+    else
+      [STATUS_REDIRECT, redirect_headers(expanded_url), []]
+    end
+  end
+
+  def post_request_response(request)
+    url = JSON.parse(request.body.read)['url']
+    [STATUS_CREATED, response_headers, shorten_url(url, request)]
   end
 
   def unprocessable_entity_response

@@ -1,4 +1,6 @@
-require File.expand_path '../../test_helper', __FILE__
+# frozen_string_literal: true
+
+require File.expand_path '../test_helper', __dir__
 
 class LinkStorageTest < Minitest::Test
   STORAGE_FILE_NAME = "#{ENV['RACK_ENV']}_url_store.pstore"
@@ -8,7 +10,7 @@ class LinkStorageTest < Minitest::Test
     clear_storage
     shortened_url = store.send('shorten_url', URL)
 
-    assert store_items_count == 0
+    assert store_items_count.zero?
 
     assert store.save_value(URL) == shortened_url
     assert store_items_count == 1
