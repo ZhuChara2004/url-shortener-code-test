@@ -55,7 +55,10 @@ class RootRackApp
   end
 
   def shorten_url(url, request)
-    [{ short_url: "#{request.url}#{@storage.save_value(url)}",  }.to_json]
+    [{
+       short_url: "#{request.url}#{@storage.save_value(url)}",
+       url: URI.parse(url).scheme ? url : "http://#{url}"
+     }.to_json]
   end
 
   def expand_url(shortened_url)

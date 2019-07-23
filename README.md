@@ -1,5 +1,17 @@
 # Url Shortener Code Test
 
+### Rack Link Shortener
+
+My idea was to avoid using of external frameworks and libraries, and try solving it,
+sing only Stdlib, so I decided to build this app using **Rack**, **minitest** and **PStore**
+
+Console commands: 
+
+- `rackup config.ru` to run an application. By default, application will be run on port **9292**
+- `rake test` to run tests
+
+---
+
 Without using an external database, we'd like you to create a URL shortening
 service. The URLs do not need to persist between restarts, but should be
 shareable between different clients while the server is running.
@@ -9,7 +21,7 @@ shareable between different clients while the server is running.
   the orignal URL, as in the following curl example:
 
 ```
-curl localhost:4000 -XPOST -d '{ "url": "http://www.farmdrop.com" }'
+curl localhost:9292 -XPOST -d '{ "url": "http://www.farmdrop.com" }'
 { "short_url": "/abc123", "url": "http://www.farmdrop.com" }
 ```
 
@@ -18,7 +30,7 @@ curl localhost:4000 -XPOST -d '{ "url": "http://www.farmdrop.com" }'
   to the POSTed URL, as shown in the following curl example:
 
 ```
-curl -v localhost:4000/abc123
+curl -v localhost:9292/abc123
 ...
 < HTTP/1.1 301 Moved Permanently
 ...
