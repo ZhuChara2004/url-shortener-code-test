@@ -1,8 +1,4 @@
-ENV['RACK_ENV'] = 'test'
-
-require 'minitest/autorun'
-
-require_relative '../../lib/link_storage'
+require File.expand_path '../../test_helper', __FILE__
 
 class LinkStorageTest < Minitest::Test
   STORAGE_FILE_NAME = "#{ENV['RACK_ENV']}_url_store.pstore"

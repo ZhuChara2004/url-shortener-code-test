@@ -2,16 +2,27 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.2)
+    json (2.2.0)
     method_source (0.9.2)
+    minitest (5.11.3)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    rack (2.0.7)
+    rack-minitest (0.0.10)
+      json
+      minitest (~> 5.0)
+      rack-test
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   pry
+  rack
+  rack-minitest
 
 BUNDLED WITH
    1.17.3
